@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Net;
 
@@ -30,7 +31,7 @@ namespace YoutubeExtractor
         /// </summary>
         /// <exception cref="IOException">The video file could not be saved.</exception>
         /// <exception cref="WebException">An error occured while downloading the video.</exception>
-        public override void Execute()
+        public override IEnumerator Execute()
         {
             this.OnDownloadStarted(EventArgs.Empty);
 
@@ -70,6 +71,8 @@ namespace YoutubeExtractor
                                     cancel = true;
                                 }
                             }
+
+                            yield return null;
                         }
                     }
                 }

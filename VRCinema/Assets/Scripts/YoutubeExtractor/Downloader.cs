@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace YoutubeExtractor
 {
@@ -55,7 +56,7 @@ namespace YoutubeExtractor
         /// <summary>
         /// Starts the work of the <see cref="Downloader"/>.
         /// </summary>
-        public abstract void Execute();
+        public abstract IEnumerator Execute();
 
         protected void OnDownloadFinished(EventArgs e)
         {

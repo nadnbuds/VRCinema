@@ -1,18 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
-using UnityEngine.Video;
 using YoutubeExtractor;
+using UnityEngine.Video;
+using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public class CinemaManager : MonoBehaviour
 {
     [SerializeField]
     private VideoPlayer videoPlayer;
 
-    public void PlayVideo(string url)
+    [SyncVar]
+    private Queue<VideoData> videoQueue;
+
+    public void AddVideoToQueue(VideoData videoData)
     {
-       IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(url);
+        videoQueue.Enqueue(videoData);
+        DownloadVideo(videoData.VideoUrl);
+    }
+
+    public void PlayTopVideo()
+    {
+        VideoData video = videoQueue.Dequeue();
+        videoPlayer.url = Path.Combine(Application.persistentDataPath, string.Join("", video.VideoTitle.Split(Path.GetInvalidFileNameChars())) + VideoType.Mp4);
+        videoPlayer.Play();
+    }
+
+    private void DownloadVideo(string url)
+    {
+        IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(url);
         VideoInfo video = null;
         foreach(VideoInfo vid in videoInfos)
         {
@@ -30,19 +46,11 @@ public class CinemaManager : MonoBehaviour
 
         var videoDownloader = new VideoDownloader(video, Path.Combine(Application.persistentDataPath,string.Join("", video.Title.Split(Path.GetInvalidFileNameChars())) + video.VideoExtension));
 
-        videoDownloader.DownloadProgressChanged += (sender, args) =>
-        {
-            Debug.Log(args.ProgressPercentage);
-        };
-
         videoDownloader.DownloadFinished += (sender, args) =>
         {
 
-            videoPlayer.url = Path.Combine(Application.persistentDataPath, string.Join("", video.Title.Split(Path.GetInvalidFileNameChars())) + video.VideoExtension);
-            videoPlayer.Play();
         };
 
-        videoDownloader.Execute();
-
+        StartCoroutine(videoDownloader.Execute());
     }
 }

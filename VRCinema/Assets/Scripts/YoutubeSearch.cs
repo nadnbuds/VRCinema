@@ -3,23 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using LightJson;
 using LightJson.Serialization;
+using Extensions;
 
-public class YoutubeSearch : MonoBehaviour
+public class YoutubeSearch
 {
-    [SerializeField]
-    private VideoData video;
     private const string baseURL = "https://www.googleapis.com/youtube/v3";
     private const string apiKey  = "AIzaSyBa3Rwz9Z58EHflU02m0LlQzmRdH1NnauQ";
 
+    public List<VideoData> videos { get; private set; }
     private string pageToken = "";
     private string keywords = "cats";
 
-    private void Awake()
-    {
-        StartCoroutine(QueryYoutubeSearch(keywords));
-    }
-
-    private IEnumerator QueryYoutubeSearch(string keywords)
+    public IEnumerator QueryYoutubeSearch(string keywords)
     {
         string query = "";
 
@@ -41,19 +36,18 @@ public class YoutubeSearch : MonoBehaviour
 
     private string ExtractSearch(string page)
     {
-        Debug.Log(page);
-
         JsonObject json = JsonReader.Parse(page);
+        videos.Clear();
 
         foreach(JsonObject item in json["items"].AsJsonArray)
         {
             Debug.Log(item);
+            string thumbnail = item["snippet"].AsJsonObject["thumbnails"].AsJsonObject["high"].AsJsonObject["url"].AsString;
+            string url = item["id"].AsJsonObject["videoId"].AsString;
+            string title = item["snippet"].AsJsonObject["title"].AsString;
 
-            video.SetThumbnail(item["snippet"].AsJsonObject["thumbnails"].AsJsonObject["high"].AsJsonObject["url"].AsString);
-            video.SetURL(item["id"].AsJsonObject["videoId"].AsString);
-
+            videos.Add(new VideoData(thumbnail, url, title));
         }
-
 
         return page;
     }

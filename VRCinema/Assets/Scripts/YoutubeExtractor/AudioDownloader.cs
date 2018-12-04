@@ -20,6 +20,7 @@
 // ****************************************************************************
 
 using System;
+using System.Collections;
 using System.IO;
 using System.Net;
 
@@ -63,11 +64,11 @@ namespace YoutubeExtractor
         /// </exception>
         /// <exception cref="AudioExtractionException">An error occured during audio extraction.</exception>
         /// <exception cref="WebException">An error occured while downloading the video.</exception>
-        public override void Execute()
+        public override IEnumerator Execute()
         {
             string tempPath = Path.GetTempFileName();
 
-            this.DownloadVideo(tempPath);
+            yield return this.DownloadVideo(tempPath);
 
             if (!this.isCanceled)
             {
@@ -77,7 +78,7 @@ namespace YoutubeExtractor
             this.OnDownloadFinished(EventArgs.Empty);
         }
 
-        private void DownloadVideo(string path)
+        private IEnumerator DownloadVideo(string path)
         {
             var videoDownloader = new VideoDownloader(this.Video, path, this.BytesToDownload);
 
@@ -91,7 +92,7 @@ namespace YoutubeExtractor
                 }
             };
 
-            videoDownloader.Execute();
+            yield return videoDownloader.Execute();
         }
 
         private void ExtractAudio(string path)
