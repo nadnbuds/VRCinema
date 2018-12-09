@@ -2,26 +2,25 @@
 using UnityEngine;
 using YoutubeExtractor;
 using UnityEngine.Video;
-using UnityEngine.Networking;
 using System.Collections.Generic;
 
 public class CinemaManager : MonoBehaviour
 {
     [SerializeField]
-    private VideoPlayer videoPlayer;
+    private SyncManager syncManager;
 
-    [SyncVar]
-    private Queue<VideoData> videoQueue;
+    [SerializeField]
+    private VideoPlayer videoPlayer;
 
     public void AddVideoToQueue(VideoData videoData)
     {
-        videoQueue.Enqueue(videoData);
+        syncManager.CmdAddVideoToQueue(videoData);
         DownloadVideo(videoData.VideoUrl);
     }
 
     public void PlayTopVideo()
     {
-        VideoData video = videoQueue.Dequeue();
+        VideoData video = syncManager.VideoQueue.Dequeue();
         videoPlayer.url = Path.Combine(Application.persistentDataPath, string.Join("", video.VideoTitle.Split(Path.GetInvalidFileNameChars())) + VideoType.Mp4);
         videoPlayer.Play();
     }
@@ -48,7 +47,7 @@ public class CinemaManager : MonoBehaviour
 
         videoDownloader.DownloadFinished += (sender, args) =>
         {
-
+            syncManager.CmdDownloadFinished();
         };
 
         StartCoroutine(videoDownloader.Execute());

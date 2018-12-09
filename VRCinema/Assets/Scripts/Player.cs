@@ -3,16 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
-    [SyncVar(hook = "CheckDownloadComplete")]
-    private float downloadProgress;
 
-    private void CheckDownloadComplete()
-    {
-        if(downloadProgress >= 1)
-        {
-            
-        }
-    }
 }

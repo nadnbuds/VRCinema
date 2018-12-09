@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.Events;
+using System;
 
 [RequireComponent(typeof(Button))]
 public class VideoImage : MonoBehaviour
@@ -11,14 +12,17 @@ public class VideoImage : MonoBehaviour
     private VideoData videoData;
     private Button button;
 
-    private void Awake()
+    public void Initialize(Action<VideoData> onClick)
     {
         button = GetComponent<Button>();
+        button.onClick.AddListener(() => { onClick.Invoke(videoData); });
     }
 
-    private void SetVideoData(VideoData videoData)
+    public void SetVideoData(VideoData videoData)
     {
         this.videoData = videoData;
+
+        StartCoroutine(RenderThumbnail(videoData.ThumbnailUrl));
     }
 
     IEnumerator RenderThumbnail(string url)

@@ -231,9 +231,9 @@ namespace YoutubeExtractor
 
         private static string GetHtml5PlayerVersion(JsonObject json)
         {
-            var regex = new Regex(@"player-(.+?).js");
+            var regex = new Regex(@"player_(.+?).js");
 
-            string js = json["assets"]["js"].ToString();
+            string js = json["assets"]["js"].AsString;
 
             return regex.Match(js).Result("$1");
         }

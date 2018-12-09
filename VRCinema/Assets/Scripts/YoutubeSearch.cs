@@ -11,20 +11,23 @@ public class YoutubeSearch
     private const string apiKey  = "AIzaSyBa3Rwz9Z58EHflU02m0LlQzmRdH1NnauQ";
 
     public List<VideoData> videos { get; private set; }
-    private string pageToken = "";
-    private string keywords = "cats";
 
-    public IEnumerator QueryYoutubeSearch(string keywords)
+    public YoutubeSearch()
+    {
+        videos = new List<VideoData>();
+    }
+
+    public IEnumerator QueryYoutubeSearch(string keywords, int pageToken)
     {
         string query = "";
 
-        if(pageToken.Length == 0)
+        if(pageToken > 0)
         {
-            query = baseURL + "/search?part=snippet&maxResults=12&order=relevance&q=" + keywords + "&type=video&videoDefinition=high&key=" + apiKey;
+            query = baseURL + "/search?pageToken=" + pageToken + "&part=snippet&maxResults=12&order=relevance&q=" + keywords + "&type=video&videoDefinition=high&key=" + apiKey;
         }
         else
         {
-            query = baseURL + "/search?pageToken=" + pageToken + "&part=snippet&maxResults=12&order=relevance&q=" + keywords + "&type=video&videoDefinition=high&key=" + apiKey;
+            query = baseURL + "/search?part=snippet&maxResults=12&order=relevance&q=" + keywords + "&type=video&videoDefinition=high&key=" + apiKey;
         }
 
         WWW page = new WWW(query);
