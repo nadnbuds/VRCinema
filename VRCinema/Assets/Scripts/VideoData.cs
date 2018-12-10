@@ -10,4 +10,11 @@
         this.VideoUrl = "https://www.youtube.com/watch?v=" + VideoUrl + "&hd=1";
         this.VideoTitle = VideoTitle;
     }
+
+    public VideoData(VideoData videoData)
+    {
+        this.ThumbnailUrl = videoData.ThumbnailUrl;
+        this.VideoUrl = videoData.VideoUrl;
+        this.VideoTitle = videoData.VideoTitle;
+    }
 }
