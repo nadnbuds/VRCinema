@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YoutubeExtractor
+namespace VideoLibrary
 {
-    public enum AudioType
+    public enum WebSites
     {
-        Aac, Mp3, Vorbis, Unknown
+        YouTube = 0
     }
 }

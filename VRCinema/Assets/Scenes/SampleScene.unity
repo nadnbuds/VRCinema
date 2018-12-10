@@ -642,6 +642,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1655335160}
   - component: {fileID: 1655335161}
+  - component: {fileID: 1655335162}
   m_Layer: 5
   m_Name: YoutubeSearch
   m_TagString: Untagged
@@ -681,6 +682,29 @@ MonoBehaviour:
   cinemaManager: {fileID: 1222123758}
   videoImagePrefab: {fileID: 114764178475178198, guid: c12cb21dcf212ba48bb2313ed4fbb40f,
     type: 2}
+--- !u!114 &1655335162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1655335159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2095666955, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &2011160124
 GameObject:
   m_ObjectHideFlags: 0

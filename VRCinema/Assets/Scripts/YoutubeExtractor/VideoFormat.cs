@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YoutubeExtractor
+namespace VideoLibrary
 {
-    public enum AudioType
+    public enum VideoFormat
     {
-        Aac, Mp3, Vorbis, Unknown
+        Flash,
+        Mobile,
+        Mp4,
+        WebM,
+        Unknown
     }
 }

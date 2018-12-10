@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YoutubeExtractor
+namespace VideoLibrary.Helpers
 {
-    public enum AudioType
+    internal static class EmptyArray<T>
     {
-        Aac, Mp3, Vorbis, Unknown
+        public static readonly T[] Value = new T[0];
     }
 }

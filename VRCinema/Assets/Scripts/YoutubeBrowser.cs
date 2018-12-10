@@ -27,7 +27,7 @@ public class YoutubeBrowser : MonoBehaviour
         }
 
         // @to-do remove when keyboard is added
-        SearchVideos("Tyler 1");
+        SearchVideos("How to tell if your cat is depressed");
     }
 
     public void SearchVideos(string query)

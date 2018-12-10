@@ -1,11 +1,11 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace YoutubeExtractor
 {
-    /// <summary>
-    /// The exception that is thrown when the video is not available for viewing.
-    /// This can happen when the uploader restricts the video to specific countries.
-    /// </summary>
     public class VideoNotAvailableException : Exception
     {
         public VideoNotAvailableException()
