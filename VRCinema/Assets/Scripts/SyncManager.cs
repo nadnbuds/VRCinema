@@ -5,34 +5,72 @@ using System.Collections.Generic;
 
 public class VideoDataList : SyncListStruct<VideoData> { }
 
-public class SyncManager : NetworkBehaviour
+public class SyncManager : Singleton<SyncManager>
 {
     [SerializeField]
     private CinemaManager cinemaManager;
 
-    private int playerDownloadsFinished = 0;
-    public VideoDataList VideoQueue;
+    private Player localPlayer;
+
+    private List<Player> players;
+    private Dictionary<Player, Dictionary<string, bool>> downloadQueue;
 
     private void Awake()
     {
-        VideoQueue = new VideoDataList();
+        players = new List<Player>();
+        downloadQueue = new Dictionary<Player, Dictionary<string, bool>>();
     }
 
-    [Command]
-    public void CmdDownloadFinished()
+    public void AddVideoToQueue(Player player, VideoData videoData)
     {
-        playerDownloadsFinished++;
-        if(playerDownloadsFinished >= NetworkManager.singleton.numPlayers)
+        foreach (Player p in players)
         {
-            cinemaManager.RpcPlayTopVideo();
+            downloadQueue[p].Add(videoData.VideoUrl, false);
+        }
+
+        cinemaManager.AddVideoToQueue(videoData);
+    }
+
+    public void PlayVideo(Player player, VideoData videoData)
+    {
+        downloadQueue[player][videoData.VideoUrl] = true;
+
+        bool playVideo = true;
+        foreach (Player p in players)
+        {
+            playVideo &= downloadQueue[p][videoData.VideoUrl];
+        }
+
+        if(playVideo)
+        {
+            cinemaManager.PlayTopVideo();
         }
     }
 
-    [Command]
-    public void CmdAddVideoToQueue(VideoData videoData)
+    public void DownloadFinished(VideoData videoData)
     {
-        VideoQueue.Add(new VideoData(videoData));
+        localPlayer.CmdFinishedDownloading(
+            videoData.ThumbnailUrl,
+            videoData.VideoUrl,
+            videoData.VideoTitle);
+    }
 
-        cinemaManager.RpcStartVideoDownload(videoData);
+    public void VideoAdded(VideoData videoData)
+    {
+        localPlayer.CmdAddToQueue(
+            videoData.ThumbnailUrl,
+            videoData.VideoUrl,
+            videoData.VideoTitle);
+    }
+
+    public void SetLocalPlayer(Player player)
+    {
+        localPlayer = player;
+    }
+
+    public void AddPlayer(Player player)
+    {
+        players.Add(player);
+        downloadQueue.Add(player, new Dictionary<string, bool>());
     }
 }

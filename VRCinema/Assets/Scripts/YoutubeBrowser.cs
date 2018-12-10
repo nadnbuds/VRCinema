@@ -7,8 +7,6 @@ public class YoutubeBrowser : MonoBehaviour
     private const int numVidsPerQuery = 12;
 
     [SerializeField]
-    private CinemaManager cinemaManager;
-    [SerializeField]
     private VideoImage videoImagePrefab;
 
     private YoutubeSearch youtubeSearch;
@@ -63,6 +61,6 @@ public class YoutubeBrowser : MonoBehaviour
     private void addNewVideoImageObject()
     {
         videoImages.Add(Instantiate(videoImagePrefab, this.transform, false));
-        videoImages[videoImages.Count - 1].Initialize(cinemaManager.AddVideoToQueue);
+        videoImages[videoImages.Count - 1].Initialize(SyncManager.instance.VideoAdded);
     }
 }

@@ -7,7 +7,7 @@
     public VideoData(string ThumbnailUrl, string VideoUrl, string VideoTitle)
     {
         this.ThumbnailUrl = ThumbnailUrl;
-        this.VideoUrl = "https://www.youtube.com/watch?v=" + VideoUrl + "&hd=1";
+        this.VideoUrl = VideoUrl;
         this.VideoTitle = VideoTitle;
     }
 

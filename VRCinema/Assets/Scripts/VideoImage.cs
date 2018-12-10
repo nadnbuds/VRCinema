@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEngine.Events;
 using System;
 
 [RequireComponent(typeof(Button))]

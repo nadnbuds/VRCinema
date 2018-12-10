@@ -47,6 +47,7 @@ public class YoutubeSearch
             Debug.Log(item);
             string thumbnail = item["snippet"].AsJsonObject["thumbnails"].AsJsonObject["high"].AsJsonObject["url"].AsString;
             string url = item["id"].AsJsonObject["videoId"].AsString;
+            url = "https://www.youtube.com/watch?v=" + url + "&hd=1";
             string title = item["snippet"].AsJsonObject["title"].AsString;
 
             videos.Add(new VideoData(thumbnail, url, title));
