@@ -5,33 +5,60 @@ using UnityEngine.Video;
 using VideoLibrary;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Collections;
+using System.Threading;
 
 public class CinemaManager : MonoBehaviour
 {
-    private string MainPath;
-
     [SerializeField]
     private VideoPlayer videoPlayer;
 
     private BackgroundWorker videoDownloader;
 
     private Queue<VideoData> videoQueue;
+    private Dictionary<VideoData, string> videoPaths;
 
     private void Awake()
     {
         videoDownloader = new BackgroundWorker();
         videoQueue = new Queue<VideoData>();
-        MainPath = Application.persistentDataPath;
+        videoPaths = new Dictionary<VideoData, string>();
     }
 
     public void AddVideoToQueue(VideoData videoData)
     {
         videoQueue.Enqueue(videoData);
-        VideoData temp = new VideoData(videoData);
 
-        videoDownloader.DoWork += (object o, DoWorkEventArgs e) => { DownloadVideo(videoData, Path.Combine(MainPath, string.Join("", videoData.VideoTitle.Split(Path.GetInvalidFileNameChars())) + "." + VideoType.Mp4)); };
-        videoDownloader.RunWorkerCompleted += (object o, RunWorkerCompletedEventArgs e) => {  SyncManager.instance.DownloadFinished(temp); };
-        videoDownloader.RunWorkerAsync();
+        string filePath = Path.Combine(Application.persistentDataPath, string.Join("", videoData.VideoTitle.Split(Path.GetInvalidFileNameChars())) + "." + VideoType.Mp4);
+        videoPaths.Add(videoData, filePath);
+
+        StartCoroutine(StartDownload(videoData, filePath));
+    }
+
+    private IEnumerator StartDownload(VideoData videoData, string path)
+    {
+        bool downloadFinished = false;
+        if(File.Exists(path))
+        {
+            downloadFinished = true;
+        }
+        else
+        {
+            Thread thread = new Thread(() => { DownloadVideo(videoData, path); });
+            thread.Start();
+        }
+
+        while(downloadFinished == false)
+        {
+            if (File.Exists(path))
+            {
+                downloadFinished = true;
+            }
+
+            yield return null;
+        }
+
+        SyncManager.instance.DownloadFinished(videoData);
     }
 
     private void DownloadVideo(VideoData videoData, string path)
@@ -46,7 +73,7 @@ public class CinemaManager : MonoBehaviour
         VideoData video = videoQueue.Dequeue();
 
         //@todo make this path set when VideoData is created
-        videoPlayer.url = Path.Combine(MainPath, string.Join("", video.VideoTitle.Split(Path.GetInvalidFileNameChars())) + "." + VideoType.Mp4);
+        videoPlayer.url = videoPaths[video];
 
         if(File.Exists(videoPlayer.url))
         {
