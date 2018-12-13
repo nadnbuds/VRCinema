@@ -361,7 +361,7 @@ public class Keyboard : MonoBehaviour {
             ShiftButton();
         }
         else
-            SearchBarText += "";
+            SearchBarText += "s";
     }
     public void Letter_T()
     {
