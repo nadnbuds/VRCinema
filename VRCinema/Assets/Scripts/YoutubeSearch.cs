@@ -44,7 +44,6 @@ public class YoutubeSearch
 
         foreach(JsonObject item in json["items"].AsJsonArray)
         {
-            Debug.Log(item);
             string thumbnail = item["snippet"].AsJsonObject["thumbnails"].AsJsonObject["high"].AsJsonObject["url"].AsString;
             string url = item["id"].AsJsonObject["videoId"].AsString;
             url = "https://www.youtube.com/watch?v=" + url + "&hd=1";

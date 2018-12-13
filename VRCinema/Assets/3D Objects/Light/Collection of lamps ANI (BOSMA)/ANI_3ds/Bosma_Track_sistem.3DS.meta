@@ -1,0 +1,184 @@
+fileFormatVersion: 2
+guid: d69406be8289bc341a1a7f813375a5e8
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Bosma_ceil
+    100002: //RootNode
+    100004: Cap_track_
+    100006: Connector-
+    100008: Connector0
+    100010: Connector1
+    100012: Connector2
+    100014: Connector3
+    100016: Connector4
+    100018: Connector5
+    100020: Connector6
+    100022: Connector7
+    100024: Connector_
+    100026: Helix001
+    100028: TRACK_000
+    100030: Tros_003
+    100032: Tros_008
+    100034: zanga_003
+    100036: zanga_008
+    400000: Bosma_ceil
+    400002: //RootNode
+    400004: Cap_track_
+    400006: Connector-
+    400008: Connector0
+    400010: Connector1
+    400012: Connector2
+    400014: Connector3
+    400016: Connector4
+    400018: Connector5
+    400020: Connector6
+    400022: Connector7
+    400024: Connector_
+    400026: Helix001
+    400028: TRACK_000
+    400030: Tros_003
+    400032: Tros_008
+    400034: zanga_003
+    400036: zanga_008
+    2100000: CRN.Zanga_met
+    2100002: CRN.Tros_met
+    2100004: Paint-wh
+    2100006: Plastic
+    2100008: Copper
+    2100010: Aluminium_sectio
+    2100012: Plastic-adaptor
+    2100014: Metal_Bolt
+    2300000: Bosma_ceil
+    2300002: Cap_track_
+    2300004: Connector-
+    2300006: Connector0
+    2300008: Connector1
+    2300010: Connector2
+    2300012: Connector3
+    2300014: Connector4
+    2300016: Connector5
+    2300018: Connector6
+    2300020: Connector7
+    2300022: Helix001
+    2300024: TRACK_000
+    2300026: Tros_003
+    2300028: Tros_008
+    2300030: zanga_003
+    2300032: zanga_008
+    3300000: Bosma_ceil
+    3300002: Cap_track_
+    3300004: Connector-
+    3300006: Connector0
+    3300008: Connector1
+    3300010: Connector2
+    3300012: Connector3
+    3300014: Connector4
+    3300016: Connector5
+    3300018: Connector6
+    3300020: Connector7
+    3300022: Helix001
+    3300024: TRACK_000
+    3300026: Tros_003
+    3300028: Tros_008
+    3300030: zanga_003
+    3300032: zanga_008
+    4300000: zanga_003
+    4300002: Tros_003
+    4300004: TRACK_000
+    4300006: Connector-
+    4300008: zanga_008
+    4300010: Tros_008
+    4300012: Connector0
+    4300014: Connector1
+    4300016: Cap_track_
+    4300018: Connector2
+    4300020: Connector3
+    4300022: Connector4
+    4300024: Connector5
+    4300026: Connector6
+    4300028: Connector7
+    4300030: Bosma_ceil
+    4300032: Helix001
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

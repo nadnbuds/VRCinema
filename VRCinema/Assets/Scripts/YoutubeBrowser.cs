@@ -8,6 +8,10 @@ public class YoutubeBrowser : MonoBehaviour
 
     [SerializeField]
     private VideoImage videoImagePrefab;
+    [SerializeField]
+    private GameObject searchPanel;
+    [SerializeField]
+    private Keyboard searchQuery;
 
     private YoutubeSearch youtubeSearch;
     private List<VideoImage> videoImages;
@@ -23,22 +27,25 @@ public class YoutubeBrowser : MonoBehaviour
         {
             addNewVideoImageObject();
         }
-
-        // @to-do remove when keyboard is added
-        SearchVideos("How to tell if your cat is depressed");
-    }
-
-    public void SearchVideos(string query)
-    {
-        query = query.Replace(' ', '+');
-        this.query = query;
-        pageToken = 0;
-        StartCoroutine(LoadVideoImages());
     }
 
     public void NextPage()
     {
         ++pageToken;
+        StartCoroutine(LoadVideoImages());
+    }
+
+    public void Search()
+    {
+        SearchVideos(searchQuery.EnterButton());
+    }
+
+    private void SearchVideos(string query)
+    {
+        searchPanel.gameObject.SetActive(true);
+        query = query.Replace(' ', '+');
+        this.query = query;
+        pageToken = 0;
         StartCoroutine(LoadVideoImages());
     }
 
@@ -60,7 +67,7 @@ public class YoutubeBrowser : MonoBehaviour
 
     private void addNewVideoImageObject()
     {
-        videoImages.Add(Instantiate(videoImagePrefab, this.transform, false));
+        videoImages.Add(Instantiate(videoImagePrefab, searchPanel.transform, false));
         videoImages[videoImages.Count - 1].Initialize(SyncManager.instance.VideoAdded);
     }
 }

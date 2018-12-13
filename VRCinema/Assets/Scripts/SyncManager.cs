@@ -3,8 +3,6 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 
-public class VideoDataList : SyncListStruct<VideoData> { }
-
 public class SyncManager : Singleton<SyncManager>
 {
     [SerializeField]

@@ -1,0 +1,191 @@
+fileFormatVersion: 2
+guid: 34d6dfa5fc53b90469a3020e8f7f030e
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Bosma_ceiling_cap_000
+    100002: //RootNode
+    100004: Cap_track_000
+    100006: Connector_Flexible_001
+    100008: Connector_Flexible_002
+    100010: Connector_Flexible_003
+    100012: Connector_Flexible_004
+    100014: Connector_L_000
+    100016: Connector_Swivel_L_00
+    100018: Connector_Swivel_R_00
+    100020: Connector_T_000
+    100022: Connector_X_000
+    100024: Helix001
+    100026: TRACK_000
+    100028: Tros_003
+    100030: Tros_008
+    100032: zanga_003
+    100034: zanga_008
+    400000: Bosma_ceiling_cap_000
+    400002: //RootNode
+    400004: Cap_track_000
+    400006: Connector_Flexible_001
+    400008: Connector_Flexible_002
+    400010: Connector_Flexible_003
+    400012: Connector_Flexible_004
+    400014: Connector_L_000
+    400016: Connector_Swivel_L_00
+    400018: Connector_Swivel_R_00
+    400020: Connector_T_000
+    400022: Connector_X_000
+    400024: Helix001
+    400026: TRACK_000
+    400028: Tros_003
+    400030: Tros_008
+    400032: zanga_003
+    400034: zanga_008
+    2100000: Bosma_ceiling_cap_000Mat
+    2100002: Cap_track_000Mat
+    2100004: Connector_Flexible_001Mat
+    2100006: Connector_Flexible_002Mat
+    2100008: Connector_Flexible_003Mat
+    2100010: Connector_Flexible_004Mat
+    2100012: Connector_L_000Mat
+    2100014: Connector_Swivel_L_00Mat
+    2100016: Connector_Swivel_R_00Mat
+    2100018: Connector_T_000Mat
+    2100020: Connector_X_000Mat
+    2100022: Helix001Mat
+    2100024: TRACK_000Mat
+    2100026: Tros_003Mat
+    2100028: Tros_008Mat
+    2100030: zanga_003Mat
+    2100032: zanga_008Mat
+    2300000: Bosma_ceiling_cap_000
+    2300002: Cap_track_000
+    2300004: Connector_Flexible_001
+    2300006: Connector_Flexible_002
+    2300008: Connector_Flexible_003
+    2300010: Connector_Flexible_004
+    2300012: Connector_L_000
+    2300014: Connector_Swivel_L_00
+    2300016: Connector_Swivel_R_00
+    2300018: Connector_T_000
+    2300020: Connector_X_000
+    2300022: Helix001
+    2300024: TRACK_000
+    2300026: Tros_003
+    2300028: Tros_008
+    2300030: zanga_003
+    2300032: zanga_008
+    3300000: Bosma_ceiling_cap_000
+    3300002: Cap_track_000
+    3300004: Connector_Flexible_001
+    3300006: Connector_Flexible_002
+    3300008: Connector_Flexible_003
+    3300010: Connector_Flexible_004
+    3300012: Connector_L_000
+    3300014: Connector_Swivel_L_00
+    3300016: Connector_Swivel_R_00
+    3300018: Connector_T_000
+    3300020: Connector_X_000
+    3300022: Helix001
+    3300024: TRACK_000
+    3300026: Tros_003
+    3300028: Tros_008
+    3300030: zanga_003
+    3300032: zanga_008
+    4300000: Bosma_ceiling_cap_000
+    4300002: Cap_track_000
+    4300004: Connector_Flexible_001
+    4300006: Connector_Flexible_002
+    4300008: Connector_Flexible_003
+    4300010: Connector_Flexible_004
+    4300012: Connector_L_000
+    4300014: Connector_Swivel_L_00
+    4300016: Connector_Swivel_R_00
+    4300018: Connector_T_000
+    4300020: Connector_X_000
+    4300022: Helix001
+    4300024: TRACK_000
+    4300026: Tros_003
+    4300028: Tros_008
+    4300030: zanga_003
+    4300032: zanga_008
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
