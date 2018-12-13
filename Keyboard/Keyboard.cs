@@ -669,4 +669,8 @@ public class Keyboard : MonoBehaviour {
         else
             SearchBarText += "/";
     }
+    public void Space()
+    {
+        SearchBarText += " ";
+    }
 }
