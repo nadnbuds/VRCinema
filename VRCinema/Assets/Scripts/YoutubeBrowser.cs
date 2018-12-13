@@ -68,6 +68,12 @@ public class YoutubeBrowser : MonoBehaviour
     private void addNewVideoImageObject()
     {
         videoImages.Add(Instantiate(videoImagePrefab, searchPanel.transform, false));
-        videoImages[videoImages.Count - 1].Initialize(SyncManager.instance.VideoAdded);
+        videoImages[videoImages.Count - 1].Initialize(
+            (VideoData data)=>
+            {
+                SyncManager.instance.VideoAdded(data);
+                searchPanel.SetActive(false);
+                searchQuery.OpenKeyboard();
+            });
     }
 }

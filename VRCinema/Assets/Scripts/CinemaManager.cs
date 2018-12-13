@@ -29,7 +29,7 @@ public class CinemaManager : MonoBehaviour
     {
         videoQueue.Enqueue(videoData);
 
-        string filePath = Path.Combine(Application.persistentDataPath, string.Join("", videoData.VideoTitle.Split(Path.GetInvalidFileNameChars())) + "." + VideoType.Mp4);
+        string filePath = Application.persistentDataPath + '/' + string.Join("", videoData.VideoTitle.Split(Path.GetInvalidFileNameChars())) + "." + VideoType.Mp4;
         videoPaths.Add(videoData, filePath);
 
         StartCoroutine(StartDownload(videoData, filePath));

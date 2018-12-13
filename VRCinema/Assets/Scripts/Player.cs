@@ -12,6 +12,7 @@ public class Player : NetworkBehaviour
         }
 
         GetComponent<OVRPlayerController>().enabled = true;
+        GetComponent<MeshRenderer>().enabled = false;
         OVRCameraRig cameraRig = GetComponentInChildren<OVRCameraRig>();
         SyncManager.instance.SetLocalPlayer(this);
         GameObject.Find("EventSystem").AddComponent<OVRInputModule>().rayTransform = cameraRig.transform;
@@ -27,24 +28,28 @@ public class Player : NetworkBehaviour
     public void CmdAddToQueue(
         string ThumbnailUrl,
         string VideoUrl,
-        string VideoTitle)
+        string VideoTitle,
+        string VideoAuthor)
     {
         RpcAddToQueue(
             ThumbnailUrl,
             VideoUrl,
-            VideoTitle);
+            VideoTitle,
+            VideoAuthor);
     }
 
     [ClientRpc]
     public void RpcAddToQueue(
         string ThumbnailUrl,
         string VideoUrl,
-        string VideoTitle)
+        string VideoTitle,
+        string VideoAuthor)
     {
         VideoData data = new VideoData(
             ThumbnailUrl,
             VideoUrl,
-            VideoTitle);
+            VideoTitle,
+            VideoAuthor);
 
         SyncManager.instance.AddVideoToQueue(this, data);
     }
@@ -53,24 +58,28 @@ public class Player : NetworkBehaviour
     public void CmdFinishedDownloading(
         string ThumbnailUrl,
         string VideoUrl,
-        string VideoTitle)
+        string VideoTitle,
+        string VideoAuthor)
     {
         RpcFinishedDownloading(
             ThumbnailUrl,
             VideoUrl,
-            VideoTitle);
+            VideoTitle,
+            VideoAuthor);
     }
 
     [ClientRpc]
     public void RpcFinishedDownloading(
         string ThumbnailUrl,
         string VideoUrl,
-        string VideoTitle)
+        string VideoTitle,
+        string VideoAuthor)
     {
         VideoData data = new VideoData(
             ThumbnailUrl,
             VideoUrl,
-            VideoTitle);
+            VideoTitle,
+            VideoAuthor);
 
         SyncManager.instance.PlayVideo(this, data);
     }

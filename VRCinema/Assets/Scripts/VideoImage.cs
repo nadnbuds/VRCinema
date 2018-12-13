@@ -8,6 +8,10 @@ public class VideoImage : MonoBehaviour
 {
     [SerializeField]
     private Image thumbnail;
+    [SerializeField]
+    private Text Title;
+    [SerializeField]
+    private Text Author;
     private VideoData videoData;
     private Button button;
 
@@ -21,6 +25,8 @@ public class VideoImage : MonoBehaviour
     {
         this.videoData = videoData;
 
+        Title.text = videoData.VideoTitle;
+        Author.text = videoData.VideoAuthor;
         StartCoroutine(RenderThumbnail(videoData.ThumbnailUrl));
     }
 

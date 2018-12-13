@@ -50,7 +50,8 @@ public class SyncManager : Singleton<SyncManager>
         localPlayer.CmdFinishedDownloading(
             videoData.ThumbnailUrl,
             videoData.VideoUrl,
-            videoData.VideoTitle);
+            videoData.VideoTitle,
+            videoData.VideoAuthor);
     }
 
     public void VideoAdded(VideoData videoData)
@@ -58,7 +59,8 @@ public class SyncManager : Singleton<SyncManager>
         localPlayer.CmdAddToQueue(
             videoData.ThumbnailUrl,
             videoData.VideoUrl,
-            videoData.VideoTitle);
+            videoData.VideoTitle,
+            videoData.VideoAuthor);
     }
 
     public void SetLocalPlayer(Player player)

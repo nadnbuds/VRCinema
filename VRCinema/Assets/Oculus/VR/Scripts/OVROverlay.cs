@@ -1,22 +1,17 @@
 /************************************************************************************
+Copyright : Copyright (c) Facebook Technologies, LLC and its affiliates. All rights reserved.
 
-Copyright   :   Copyright 2017 Oculus VR, LLC. All Rights reserved.
-
-Licensed under the Oculus VR Rift SDK License Version 3.4.1 (the "License");
-you may not use the Oculus VR Rift SDK except in compliance with the License,
-which is provided at the time of installation or download, or which
-otherwise accompanies this software in either electronic or hard copy form.
+Licensed under the Oculus Utilities SDK License Version 1.31 (the "License"); you may not use
+the Utilities SDK except in compliance with the License, which is provided at the time of installation
+or download, or which otherwise accompanies this software in either electronic or hard copy form.
 
 You may obtain a copy of the License at
+https://developer.oculus.com/licenses/utilities-1.31
 
-https://developer.oculus.com/licenses/sdk-3.4.1
-
-Unless required by applicable law or agreed to in writing, the Oculus VR SDK
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
+Unless required by applicable law or agreed to in writing, the Utilities SDK distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ANY KIND, either express or implied. See the License for the specific language governing
+permissions and limitations under the License.
 ************************************************************************************/
 
 using UnityEngine;
@@ -29,12 +24,12 @@ using System.Runtime.InteropServices;
 /// rendered as a TimeWarp overlay instead by drawing it into the eye buffer.
 /// This will take full advantage of the display resolution and avoid double
 /// resampling of the texture.
-/// 
+///
 /// We support 3 types of Overlay shapes right now
 ///		1. Quad : This is most common overlay type , you render a quad in Timewarp space.
 ///		2. Cylinder: [Mobile Only][Experimental], Display overlay as partial surface of a cylinder
 ///			* The cylinder's center will be your game object's center
-///			* We encoded the cylinder's parameters in transform.scale, 
+///			* We encoded the cylinder's parameters in transform.scale,
 ///				**[scale.z] is the radius of the cylinder
 ///				**[scale.y] is the height of the cylinder
 ///				**[scale.x] is the length of the arc of cylinder
@@ -46,7 +41,7 @@ using System.Runtime.InteropServices;
 ///		4. OffcenterCubemap: [Mobile Only] Display overlay as a cube map with a texture coordinate offset
 ///			* The actually sampling will looks like [color = texture(cubeLayerSampler, normalize(direction) + offset)] instead of [color = texture( cubeLayerSampler, direction )]
 ///			* The extra center offset can be feed from transform.position
-///			* Note: if transform.position's magnitude is greater than 1, which will cause some cube map pixel always invisible 
+///			* Note: if transform.position's magnitude is greater than 1, which will cause some cube map pixel always invisible
 ///					Which is usually not what people wanted, we don't kill the ability for developer to do so here, but will warn out.
 ///     5. Equirect: Display overlay as a 360-degree equirectangular skybox.
 /// </summary>
@@ -95,10 +90,34 @@ public class OVROverlay : MonoBehaviour
 	public bool isProtectedContent = false;
 
 	/// <summary>
+	/// If true, the layer will be created as an external surface. externalSurfaceObject contains the Surface object. It's effective only on Android.
+	/// </summary>
+	[Tooltip("If true, the layer will be created as an external surface. externalSurfaceObject contains the Surface object. It's effective only on Android.")]
+	public bool isExternalSurface = false;
+
+	/// <summary>
+	/// The width which will be used to create the external surface. It's effective only on Android.
+	/// </summary>
+	[Tooltip("The width which will be used to create the external surface. It's effective only on Android.")]
+	public int externalSurfaceWidth = 0;
+
+	/// <summary>
+	/// The height which will be used to create the external surface. It's effective only on Android.
+	/// </summary>
+	[Tooltip("The height which will be used to create the external surface. It's effective only on Android.")]
+	public int externalSurfaceHeight = 0;
+
+	/// <summary>
 	/// The compositionDepth defines the order of the OVROverlays in composition. The overlay/underlay with smaller compositionDepth would be composited in the front of the overlay/underlay with larger compositionDepth.
 	/// </summary>
 	[Tooltip("The compositionDepth defines the order of the OVROverlays in composition. The overlay/underlay with smaller compositionDepth would be composited in the front of the overlay/underlay with larger compositionDepth.")]
 	public int compositionDepth = 0;
+
+	/// <summary>
+	/// The noDepthBufferTesting will stop layer's depth buffer compositing even if the engine has "Depth buffer sharing" enabled on Rift.
+	/// </summary>
+	[Tooltip("The noDepthBufferTesting will stop layer's depth buffer compositing even if the engine has \"Shared Depth Buffer\" enabled")]
+	public bool noDepthBufferTesting = false;
 
 	/// <summary>
 	/// Specify overlay's shape
@@ -117,8 +136,19 @@ public class OVROverlay : MonoBehaviour
 	protected IntPtr[] texturePtrs = new IntPtr[] { IntPtr.Zero, IntPtr.Zero };
 
 	/// <summary>
-	/// Use this function to set texture and texNativePtr when app is running 
-	/// GetNativeTexturePtr is a slow behavior, the value should be pre-cached 
+	/// The Surface object (Android only).
+	/// </summary>
+	public System.IntPtr externalSurfaceObject;
+
+	public delegate void ExternalSurfaceObjectCreated();
+	/// <summary>
+	/// Will be triggered after externalSurfaceTextueObject get created.
+	/// </summary>
+	public ExternalSurfaceObjectCreated externalSurfaceObjectCreated;
+
+	/// <summary>
+	/// Use this function to set texture and texNativePtr when app is running
+	/// GetNativeTexturePtr is a slow behavior, the value should be pre-cached
 	/// </summary>
 #if UNITY_2017_2_OR_NEWER
 	public void OverrideOverlayTextureInfo(Texture srcTexture, IntPtr nativePtr, UnityEngine.XR.XRNode node)
@@ -134,7 +164,7 @@ public class OVROverlay : MonoBehaviour
 
 		if (textures.Length <= index)
 			return;
-		
+
 		textures[index] = srcTexture;
 		texturePtrs[index] = nativePtr;
 
@@ -226,7 +256,14 @@ public class OVROverlay : MonoBehaviour
 		if (layerId > 0)
 		{
 			layerDesc = desc;
-			stageCount = OVRPlugin.GetLayerTextureStageCount(layerId);
+			if (isExternalSurface)
+			{
+				stageCount = 1;
+			}
+			else
+			{
+				stageCount = OVRPlugin.GetLayerTextureStageCount(layerId);
+			}
 		}
 
 		isOverridePending = false;
@@ -236,6 +273,23 @@ public class OVROverlay : MonoBehaviour
 
 	private bool CreateLayerTextures(bool useMipmaps, OVRPlugin.Sizei size, bool isHdr)
 	{
+		if (isExternalSurface)
+		{
+			if (externalSurfaceObject == System.IntPtr.Zero)
+			{
+				externalSurfaceObject = OVRPlugin.GetLayerAndroidSurfaceObject(layerId);
+				if (externalSurfaceObject != System.IntPtr.Zero)
+				{
+					Debug.LogFormat("GetLayerAndroidSurfaceObject returns {0}", externalSurfaceObject);
+					if (externalSurfaceObjectCreated != null)
+					{
+						externalSurfaceObjectCreated();
+					}
+				}
+			}
+			return false;
+		}
+
 		bool needsCopy = false;
 
 		if (stageCount <= 0)
@@ -250,7 +304,7 @@ public class OVROverlay : MonoBehaviour
 		{
 			if (layerTextures[eyeId].swapChain == null)
 				layerTextures[eyeId].swapChain = new Texture[stageCount];
-			
+
 			if (layerTextures[eyeId].swapChainPtr == null)
 				layerTextures[eyeId].swapChainPtr = new IntPtr[stageCount];
 
@@ -289,6 +343,11 @@ public class OVROverlay : MonoBehaviour
 
 	private void DestroyLayerTextures()
 	{
+		if (isExternalSurface)
+		{
+			return;
+		}
+
 		for (int eyeId = 0; layerTextures != null && eyeId < texturesPerStage; ++eyeId)
 		{
 			if (layerTextures[eyeId].swapChain != null)
@@ -306,7 +365,7 @@ public class OVROverlay : MonoBehaviour
 		if (layerIndex != -1)
 		{
 			// Turn off the overlay if it was on.
-			OVRPlugin.EnqueueSubmitLayer(true, false, IntPtr.Zero, IntPtr.Zero, -1, 0, OVRPose.identity.ToPosef(), Vector3.one.ToVector3f(), layerIndex, (OVRPlugin.OverlayShape)prevOverlayShape);
+			OVRPlugin.EnqueueSubmitLayer(true, false, false, IntPtr.Zero, IntPtr.Zero, -1, 0, OVRPose.identity.ToPosef(), Vector3.one.ToVector3f(), layerIndex, (OVRPlugin.OverlayShape)prevOverlayShape);
 			instances[layerIndex] = null;
 			layerIndex = -1;
 		}
@@ -327,6 +386,11 @@ public class OVROverlay : MonoBehaviour
 
 	private bool LatchLayerTextures()
 	{
+		if (isExternalSurface)
+		{
+			return true;
+		}
+
 		for (int i = 0; i < texturesPerStage; ++i)
 		{
 			if (textures[i] != layerTextures[i].appTexture || layerTextures[i].appTexturePtr == IntPtr.Zero)
@@ -345,7 +409,7 @@ public class OVROverlay : MonoBehaviour
 					var rt = textures[i] as RenderTexture;
 					if (rt && !rt.IsCreated())
 						rt.Create();
-					
+
 					layerTextures[i].appTexturePtr = (texturePtrs[i] != IntPtr.Zero) ? texturePtrs[i] : textures[i].GetNativeTexturePtr();
 
 					if (layerTextures[i].appTexturePtr != IntPtr.Zero)
@@ -379,14 +443,31 @@ public class OVROverlay : MonoBehaviour
 
 	private OVRPlugin.LayerDesc GetCurrentLayerDesc()
 	{
+		OVRPlugin.Sizei textureSize = new OVRPlugin.Sizei() { w = 0, h = 0 };
+
+		if (isExternalSurface)
+		{
+			textureSize.w = externalSurfaceWidth;
+			textureSize.h = externalSurfaceHeight;
+		}
+		else
+		{
+			if (textures[0] == null)
+			{
+				Debug.LogWarning("textures[0] hasn't been set");
+			}
+			textureSize.w = textures[0] ? textures[0].width : 0;
+			textureSize.h = textures[0] ? textures[0].height : 0;
+		}
+
 		OVRPlugin.LayerDesc newDesc = new OVRPlugin.LayerDesc() {
 			Format = OVRPlugin.EyeTextureFormat.R8G8B8A8_sRGB,
-			LayerFlags = (int)OVRPlugin.LayerFlags.TextureOriginAtBottomLeft,
+			LayerFlags = isExternalSurface ? 0 : (int)OVRPlugin.LayerFlags.TextureOriginAtBottomLeft,
 			Layout = layout,
 			MipLevels = 1,
 			SampleCount = 1,
 			Shape = (OVRPlugin.OverlayShape)currentOverlayShape,
-			TextureSize = new OVRPlugin.Sizei() { w = textures[0].width, h = textures[0].height }
+			TextureSize = textureSize
 		};
 
 		var tex2D = textures[0] as Texture2D;
@@ -394,7 +475,7 @@ public class OVROverlay : MonoBehaviour
 		{
 			if (tex2D.format == TextureFormat.RGBAHalf || tex2D.format == TextureFormat.RGBAFloat)
 				newDesc.Format = OVRPlugin.EyeTextureFormat.R16G16B16A16_FP;
-			
+
 			newDesc.MipLevels = tex2D.mipmapCount;
 		}
 
@@ -403,7 +484,7 @@ public class OVROverlay : MonoBehaviour
 		{
 			if (texCube.format == TextureFormat.RGBAHalf || texCube.format == TextureFormat.RGBAFloat)
 				newDesc.Format = OVRPlugin.EyeTextureFormat.R16G16B16A16_FP;
-			
+
 			newDesc.MipLevels = texCube.mipmapCount;
 		}
 
@@ -421,11 +502,21 @@ public class OVROverlay : MonoBehaviour
 			newDesc.LayerFlags |= (int)OVRPlugin.LayerFlags.ProtectedContent;
 		}
 
+		if (isExternalSurface)
+		{
+			newDesc.LayerFlags |= (int)OVRPlugin.LayerFlags.AndroidSurfaceSwapChain;
+		}
+
 		return newDesc;
 	}
 
 	private bool PopulateLayer(int mipLevels, bool isHdr, OVRPlugin.Sizei size, int sampleCount, int stage)
 	{
+		if (isExternalSurface)
+		{
+			return true;
+		}
+
 		bool ret = false;
 
 		RenderTextureFormat rtFormat = (isHdr) ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.ARGB32;
@@ -472,7 +563,7 @@ public class OVROverlay : MonoBehaviour
 				if (currentOverlayShape != OverlayShape.Cubemap && currentOverlayShape != OverlayShape.OffcenterCubemap)
 				{
 					tex2DMaterial.SetInt("_linearToSrgb", (!isHdr && dataIsLinear) ? 1 : 0);
-					
+
 					//Resolve, decompress, swizzle, etc not handled by simple CopyTexture.
 #if !UNITY_ANDROID || UNITY_EDITOR
 					// The PC compositor uses premultiplied alpha, so multiply it here.
@@ -487,7 +578,7 @@ public class OVROverlay : MonoBehaviour
 					for (int face = 0; face < 6; ++face)
 					{
 						cubeMaterial.SetInt("_linearToSrgb", (!isHdr && dataIsLinear) ? 1 : 0);
-						
+
 #if !UNITY_ANDROID || UNITY_EDITOR
 						// The PC compositor uses premultiplied alpha, so multiply it here.
 						cubeMaterial.SetInt("_premultiply", 1);
@@ -508,10 +599,13 @@ public class OVROverlay : MonoBehaviour
 		return ret;
 	}
 
-	private bool SubmitLayer(bool overlay, bool headLocked, OVRPose pose, Vector3 scale, int frameIndex)
+	private bool SubmitLayer(bool overlay, bool headLocked, bool noDepthBufferTesting, OVRPose pose, Vector3 scale, int frameIndex)
 	{
 		int rightEyeIndex = (texturesPerStage >= 2) ? 1 : 0;
-		bool isOverlayVisible = OVRPlugin.EnqueueSubmitLayer(overlay, headLocked, layerTextures[0].appTexturePtr, layerTextures[rightEyeIndex].appTexturePtr, layerId, frameIndex, pose.flipZ().ToPosef(), scale.ToVector3f(), layerIndex, (OVRPlugin.OverlayShape)currentOverlayShape);
+		bool isOverlayVisible = OVRPlugin.EnqueueSubmitLayer(overlay, headLocked, noDepthBufferTesting,
+			isExternalSurface ? System.IntPtr.Zero : layerTextures[0].appTexturePtr,
+			isExternalSurface ? System.IntPtr.Zero : layerTextures[rightEyeIndex].appTexturePtr,
+			layerId, frameIndex, pose.flipZ().ToPosef(), scale.ToVector3f(), layerIndex, (OVRPlugin.OverlayShape)currentOverlayShape);
 
 		prevOverlayShape = currentOverlayShape;
 
@@ -553,7 +647,7 @@ public class OVROverlay : MonoBehaviour
 	{
 		if ((gameObject.hideFlags & HideFlags.DontSaveInBuild) != 0)
 			return;
-	
+
 		DestroyLayerTextures();
 		DestroyLayer();
 	}
@@ -617,7 +711,7 @@ public class OVROverlay : MonoBehaviour
 		// The overlay must be specified every eye frame, because it is positioned relative to the
 		// current head location.  If frames are dropped, it will be time warped appropriately,
 		// just like the eye buffers.
-		if (currentOverlayType == OverlayType.None || textures.Length < texturesPerStage || textures[0] == null)
+		if (currentOverlayType == OverlayType.None || ((textures.Length < texturesPerStage || textures[0] == null) && !isExternalSurface))
 			return;
 
 		OVRPose pose = OVRPose.identity;
@@ -634,12 +728,12 @@ public class OVROverlay : MonoBehaviour
 
 		if (layerIndex == -1 || layerId <= 0)
 			return;
-	
+
 		bool useMipmaps = (newDesc.MipLevels > 1);
 
 		createdLayer |= CreateLayerTextures(useMipmaps, newDesc.TextureSize, isHdr);
 
-		if (layerTextures[0].appTexture as RenderTexture != null)
+		if (!isExternalSurface && (layerTextures[0].appTexture as RenderTexture != null))
 			isDynamic = true;
 
 		if (!LatchLayerTextures())
@@ -653,12 +747,12 @@ public class OVROverlay : MonoBehaviour
 				return;
 		}
 
-		bool isOverlayVisible = SubmitLayer(overlay, headLocked, pose, scale, frameIndex);
+		bool isOverlayVisible = SubmitLayer(overlay, headLocked, noDepthBufferTesting, pose, scale, frameIndex);
 
 		prevFrameIndex = frameIndex;
 		if (isDynamic)
 			++frameIndex;
-		
+
 		// Backward compatibility: show regular renderer if overlay isn't visible.
 		if (rend)
 			rend.enabled = !isOverlayVisible;
